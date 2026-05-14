@@ -9,13 +9,19 @@ dotenv.config({
 })
 
 Connect_DB()
+.then(()=>{
+App.listen(process.env.PORT||8000  ,()=>{
+    console.log(`this is hosted on port ${process.env.PORT}`)
+})
+})
+.catch((error)=>{
+    console.log("MONGO_DB connection failed!!",error)
+})
 
 App.get('/',(req,res)=>{
     res.send("i am here where are you searching me?")
 })
-App.listen(process.env.PORT,()=>{
-    console.log(`this is hosted on port ${process.env.PORT}`)
-})
+
 
 
 
