@@ -15,6 +15,7 @@ if(!localFilePath)  return null
 const response=await cloudinary.uploader.upload(localFilePath,{
     resource_type:"auto"
 })
+console.log("it is very important");
 console.log("file has been uploaded on cloudinary",response)
 fs.unlinkSync(localFilePath)
     }catch(error){

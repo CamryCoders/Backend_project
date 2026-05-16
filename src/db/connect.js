@@ -9,6 +9,7 @@ try{
     const connected_response=await mongoose.connect(`${process.env.MONGODB_URL}/${DB_NAME}`)
 
     console.log(`\n MongoDb connected!! DB HOST: ${connected_response.connection.host}`)
+    
   
 } catch(error){
 console.log("Mongodb connection failed",error)
