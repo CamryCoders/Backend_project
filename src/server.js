@@ -1,26 +1,38 @@
+
+
+
+
+
+
+
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import { DB_NAME } from './constants.js';
 import express from 'express'
 import Connect_DB from './db/connect.js';
-const App = express()
-dotenv.config({
-    path:'./.env'
-})
+import cors from 'cors'
 
+const App = express()
+dotenv.config()
+App.use(cors())
+
+
+App.get('/',(req,res)=>{
+    console.log("req",req.url)
+    res.send("i am here where are you searching me?");
+})
 Connect_DB()
 .then(()=>{
-App.listen(process.env.PORT||8000  ,()=>{
+App.listen(process.env.PORT||8000,()=>{
     console.log(`this is hosted on port ${process.env.PORT}`)
+    
 })
+
 })
 .catch((error)=>{
     console.log("MONGO_DB connection failed!!",error)
 })
 
-App.get('/',(req,res)=>{
-    res.send("i am here where are you searching me?")
-})
 
 
 
@@ -32,21 +44,23 @@ App.get('/',(req,res)=>{
 
 
 
-/*
-    ; (async () => {
-        try {
-            await mongoose.connect(`${process.env.MONGODB_URL}/${DB_NAME}`)
-            App.on("error", (error) => {
-                console.log("ERROR:", error);
-                throw error
-            })
-
-            App.listen(process.env.PORT,()=>{
-                console.log(`this server is hosted on ${ process.env.PORT}`)
-            })
-        } catch (error) {
-            throw error
-        }
 
 
-    })()*/
+// /*
+//     ; (async () => {
+//         try {
+//             await mongoose.connect(`${process.env.MONGODB_URL}/${DB_NAME}`)
+//             App.on("error", (error) => {
+//                 console.log("ERROR:", error);
+//                 throw error
+//             })
+
+//             App.listen(process.env.PORT,()=>{
+//                 console.log(`this server is hosted on ${ process.env.PORT}`)
+//             })
+//         } catch (error) {
+//             throw error
+//         }
+
+
+//     })()*/
