@@ -11,19 +11,20 @@ import { DB_NAME } from './constants.js';
 import express from 'express'
 import Connect_DB from './db/connect.js';
 import cors from 'cors'
+import {app} from './index.js'
 
-const App = express()
+
 dotenv.config()
-App.use(cors())
+app.use(cors())
 
 
-App.get('/',(req,res)=>{
+app.get('/',(req,res)=>{
     console.log("req",req.url)
     res.send("i am here where are you searching me?");
 })
 Connect_DB()
 .then(()=>{
-App.listen(process.env.PORT||8000,()=>{
+app.listen(process.env.PORT||8000,()=>{
     console.log(`this is hosted on port ${process.env.PORT}`)
     
 })

@@ -1,6 +1,7 @@
 import mongoose,{Schema} from 'mongoose'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import {Videos} from './video.model.js'
 
 const user_schema=new Schema({
      username:{
@@ -10,7 +11,7 @@ const user_schema=new Schema({
         trim:true,
         index:true
       },
-      name:{
+      full_name:{
         type:String,
         required:true,
         unique:true
@@ -20,7 +21,7 @@ const user_schema=new Schema({
         required:true,
         unique:true
       },
-      Image:{
+      avatar:{
         type:String,// cloudinary url
       },
       password:{
@@ -29,23 +30,27 @@ const user_schema=new Schema({
       },
       watch_history:{
         type:Schema.Types.ObjectId,
-        ref:videos
+        ref:"Videos"
+      },
+      refreshToken:{
+        type:String,
       }
 },{timestamps:true})
 user_schema.pre("save",async function(next){
-if(!this.isModified("password")) return next()
+if(!this.isModified("password")) return
 
-this.password=bcrypt.hash(this.password,10)
+this.password=await bcrypt.hash(this.password,10)
 next()
+
 })
 user_schema.methods.isPasswordCorrect=async function(password){
   return await bcrypt.compare(password,this.password)
 }
 user_schema.methods.generateAccessToken=function(){
-  jwt.sign(
+  return jwt.sign(
     {
       _id:this._id,
-      name:this.username,
+      username:this.username,
       email:this.email
 
     },
@@ -56,7 +61,7 @@ user_schema.methods.generateAccessToken=function(){
   )
 }
 user_schema.methods.generateRefreshToken=function(){
-  jwt.sign(
+  return jwt.sign(
     {
       _id:this._id,
       
