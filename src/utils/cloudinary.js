@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary'
 import dotenv from 'dotenv'
 import fs from 'fs'
+import { ApiError } from './Apierror';
 dotenv.config()
 cloudinary.config({
     cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
@@ -29,5 +30,17 @@ return response
 
     }
 }
+const removeFromCloudinary=async(public_id)=>{
 
-export {uploadOnCloudinary}
+    try {
+        const response=await cloudinary.uploader.destroy(public_id)
+        console.log(response)
+        
+    } catch (error) {
+        console.log(error)
+        throw new ApiError(500,"Old avatar has not deleted")
+    }
+
+    
+}
+export {uploadOnCloudinary,removeFromCloudinary}

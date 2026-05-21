@@ -24,6 +24,9 @@ const user_schema=new Schema({
       avatar:{
         type:String,// cloudinary url
       },
+      public_id:{
+type:String,
+      },
       password:{
         type:String,
         required:[true,"Password is required"]
